@@ -116,6 +116,8 @@ RUN rm -Rf /etc/nginx/conf.d/* && \
     mkdir -p /etc/nginx/ssl/
 ADD ./conf/nginx-site.conf /etc/nginx/sites-available/default.conf
 RUN ln -s /etc/nginx/sites-available/default.conf /etc/nginx/sites-enabled/default.conf
+#Unlink unused file
+RUN unlink /etc/nginx/sites-enabled/default
 
 
 # Install composer
