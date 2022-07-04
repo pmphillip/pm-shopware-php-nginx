@@ -151,13 +151,24 @@ RUN usermod -a -G users www-data
 
 RUN mkdir -p /var/www/html
 RUN chown -R www-data:www-data /var/www
-
+RUN chown -R www-data:www-data /var/log
+RUN chown -R www-data:www-data /var/lib/nginx/
+# needed for pecl install redis with non-root user
+RUN chown -R www-data:www-data /tmp/pear/
+RUN chown -R www-data:www-data /usr/share/php
+RUN chown -R www-data:www-data /usr/lib/php/
 # add test PHP file
 #ADD ./index.php /var/www/html/index.php
 
 RUN mkdir /run/php && chown www-data:www-data -R /run/php
 
 WORKDIR /var/www/html
+
+#non-root user
+RUN chown -R www-data:www-data /etc/nginx/conf.d
+RUN touch /var/run/nginx.pid && \
+        chown -R www-data:www-data /var/run/nginx.pid
+USER www-data
 
 # Expose Ports
 EXPOSE 443
